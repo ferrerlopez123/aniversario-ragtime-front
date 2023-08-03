@@ -1,0 +1,12 @@
+<div class="flex flex-col m-3">
+    <div class="flex flex-row justify-center">
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="warning"></mat-icon>
+    </div>
+    <div class="flex flex-row text-center sm:text-lg mb-3 text-base">
+        ¿Está seguro que desea eliminar el boleto?
+    </div>
+    <div class="flex flex-row justify-center items-center gap-2">
+        <button mat-raised-button (click)="cerrar(true)">Aceptar</button>
+        <button mat-raised-button (click)="cerrar()">Cancelar</button>
+    </div>
+</div>

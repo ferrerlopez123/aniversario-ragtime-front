@@ -1,0 +1,164 @@
+<div class="flex flex-col w-full my-2">
+    <div class="flex flex-row">
+        <div class="sm:text-xl text-lg w-full">Lista de Boletos</div>
+        <div class="añadir">
+            <button mat-raised-button (click)="addTicket()" class="w-fit sm:px-4 px-1">
+                <mat-icon>add</mat-icon>
+                Nuevo Boleto
+            </button>
+        </div>
+    </div>
+    <div class="flex flex-row-reverse w-full">
+        <mat-form-field class="sm:w-[50%] w-full">
+            <span matPrefix> </span>
+            <input type="text" matInput placeholder="Buscar boleto" name="search" (keyup)="searchFilter($event)" #input>
+            <button matSuffix mat-button><mat-icon >search</mat-icon></button>
+        </mat-form-field>
+
+    </div>
+    <div class="mw-full mat-elevation-z8 my-3 md:block hidden">
+   <div  *ngIf="!isLoading; else loading">
+  
+        <table mat-table [dataSource]="dataSource" class="w-full">
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef class="text-center">Nombre</th>
+                <td mat-cell *matCellDef="let element"> {{element.name | titlecase}} {{element.surnames| titlecase}} </td>
+            </ng-container>
+            <ng-container matColumnDef="package">
+                <th mat-header-cell *matHeaderCellDef>Paquete</th>
+                <td mat-cell *matCellDef="let element"> {{formattingPackage(element.package)}} </td>
+            </ng-container>
+            <ng-container matColumnDef="soldDate">
+                <th mat-header-cell *matHeaderCellDef>Fecha de venta</th>
+                <td mat-cell *matCellDef="let element"> {{element.soldDate}} </td>
+            </ng-container>
+            <ng-container matColumnDef="seller">
+                <th mat-header-cell *matHeaderCellDef>Vendedor</th>
+                <td mat-cell *matCellDef="let element"> {{element.seller |titlecase }} </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Estado</th>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+            </ng-container>
+            <ng-container matColumnDef="seat">
+                <th mat-header-cell *matHeaderCellDef>Asiento</th>
+                <td mat-cell *matCellDef="let element"> {{element.seat}} </td>
+            </ng-container>
+            <ng-container matColumnDef="ticket">
+                <th mat-header-cell *matHeaderCellDef>Acciones</th>
+                <td mat-cell *matCellDef="let element" class="text-center"> 
+                    <div class="flex flex-row justify-center">
+                        <div *ngIf="element.status === 'Pagado'; else notPay">
+                         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="visibility" (click)="createTicket(element)"
+                            class="cursor-pointer">
+                            </mat-icon>
+                        </div>
+                        <ng-template #notPay>
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="visibility_off"></mat-icon>
+                        </ng-template>
+                        <div *ngIf="isAdmin">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit" (click)="addTicket(element)"
+                            class="cursor-pointer ml-2">
+                            </mat-icon>
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete" (click) = "deleteTicket(element._id)"
+                            class="cursor-pointer ml-2">
+                            </mat-icon>
+                        </div>
+                    </div>
+                   
+                 </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <table class="w-full text-center m-3 text-lg" *ngIf="!dataSource.data.length">
+            <tr>
+              <td class="w-full text-center m-3 text-lg" [attr.colspan]="displayedColumns.length">
+                {{ noDataMesssage() }}
+            </tr>
+          </table>
+        <mat-paginator 
+        *ngIf="dataSource.data.length > 0"
+        [pageSizeOptions]="[10, 20, 30]"
+        showFirstLastButtons
+        aria-label="Select page of periodic elements"
+        (page)="handlePageEvent($event)">
+        </mat-paginator>
+    </div>  
+    </div>
+
+    <!--Mobile-->
+<div class="flex flex-col w-full justify-center items-center md:hidden">
+  <div *ngIf="!isLoading; else loading">
+    <div  class="w-full flex-col justify-center flex items-center"  *ngIf="ticketsList?.length; else noData">
+        <mat-card class="flex flex-col w-full my-3" *ngFor="let ticket of ticketsList | paginate: { itemsPerPage: itemsMobile, currentPage: p }">
+            <div class="flex flex-row justify-between gap-2">
+                <div class="flex flex-col w-[50%] gap-2">
+                    <div>
+                        <span class="font-semibold">Nombre:</span> 
+                        {{ticket.name | titlecase}} {{ticket.surnames | titlecase}}
+                    </div>
+                    <div>
+                        <span class="font-semibold">Paquete:</span> 
+                        {{formattingPackage(ticket.package)}}
+                    </div>
+                    <div>
+                        <span class="font-semibold">Estado:</span> 
+                        {{ticket.status}}
+                    </div>
+                </div>
+                <div class="flex flex-col w-[50%] gap-2">
+                <div>
+                    <span class="font-semibold">Vendedor:</span> 
+                    {{ticket.seller | titlecase}}
+                </div>
+                <div>
+                    <span class="font-semibold">Fecha de venta:</span> 
+                    {{ticket.soldDate}}
+                </div>
+                <div>
+                    <span class="font-semibold">Asiento:</span> 
+                    {{ticket.seat}}
+                </div>
+                </div> 
+            </div>
+            <div class="flex flex-row items-center justify-center mt-3">
+                <div *ngIf="ticket.status === 'Pagado'; else notPay">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="visibility" (click)="createTicket(ticket)"
+                       class="cursor-pointer">
+                       </mat-icon>
+                   </div>
+                   <ng-template #notPay>
+                       <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="visibility_off"></mat-icon>
+                   </ng-template>
+                   <div *ngIf="isAdmin">
+                       <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit" (click)="addTicket(ticket)"
+                       class="cursor-pointer ml-2">
+                       </mat-icon>
+                       <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="delete" (click) = "deleteTicket(ticket._id)"
+                       class="cursor-pointer ml-2">
+                       </mat-icon>
+                   </div>
+
+            </div>
+          </mat-card>
+          <pagination-controls class="my-pagination" (pageChange)="handleMobilePageEvent($event)"></pagination-controls>
+        </div>
+  </div>  
+        <ng-template #noData>
+            <mat-card class="w-full m-3">
+                <div class="w-full text-center sm:text-lg text-base m-3">
+                    {{ noDataMesssage() }}
+                </div>
+            </mat-card>
+        </ng-template> 
+    </div>
+
+<ng-template #loading>
+    <div class="flex flex-row justify-center p-3 uploader-status">
+        <mat-spinner></mat-spinner>
+
+    </div>
+</ng-template>
+</div>
+

@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthService } from './auth/services/auth.service';
+import { AuthStatus } from './auth/interfaces';
 
 @Component({
   selector: 'app-root',

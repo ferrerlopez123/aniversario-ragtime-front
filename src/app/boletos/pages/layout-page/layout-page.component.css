@@ -1,0 +1,27 @@
+.mat-nav-list .mat-list-item {
+    color: white;
+}
+
+.name {
+    margin-bottom: -15px;
+}
+
+.menu .mat-list-base  {
+   display: flex !important;
+}
+
+.mat-drawer.mat-drawer-push {
+    background-color: rgba(5, 5, 5, 0.603) !important;
+}
+
+.activo {
+    color: white;
+}
+
+.mat-list-base .mat-list-item, .mat-list-base .mat-list-option {
+    width: fit-content !important;
+}
+ 
+::ng-deep .mat-list-base .mat-list-item .mat-list-item-content, .mat-list-base .mat-list-option .mat-list-item-conten {
+    padding: 0 12px !important;
+}

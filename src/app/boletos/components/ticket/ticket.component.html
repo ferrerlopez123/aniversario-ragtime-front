@@ -1,0 +1,42 @@
+<div class="w-[298px]  ticket-image text-white font-sans p-4" id="contenido">
+    <div class="flex flex-col">
+        <div class="flex flex-row w-full text-2xl text-center justify-center font-bold m-1">
+            RAGTIME COMPANY
+        </div>
+        <div class="flex flex-row justify-center">
+            <img src="assets/images/company-logo-1.png" class="max-w-[55%]">
+        </div>
+        <div class="flex flex-row w-full text-base text-center justify-center font-medium">
+            Aniversario
+        </div>
+        <div class="flex flex-col">
+            <div class="flex flex-row w-full text-lg justify-center text-center font-semibold">
+            {{name | titlecase}}
+            </div>
+            <div class="flex flex-row w-full text-lg justify-center text-center font-semibold">
+            !Ya tienes tu boleto!
+            </div>
+        </div>
+        <div class="flex flex-row justify-between border-solid border-2 border-white p-1 text-sm font-normal mt-1">
+            <div>
+                Paquete: {{package}}
+                <div *ngIf="seat">
+                Asiento: {{seat}}
+                </div>
+            </div>
+            <div>
+                Total: {{price | currency}}
+            </div>
+        </div>
+        <div class="flex flex-row justify-center mt-2">
+            <qrcode [qrdata]="dataQr" [width]="150" [errorCorrectionLevel]="'M'" [margin]="2">
+
+            </qrcode>
+        </div>
+        <div class="flex flex-row-reverse">
+                    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="download" (click)="crearImagen()">
+                    </mat-icon>
+           
+        </div>
+    </div>
+</div>

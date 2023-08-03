@@ -1,0 +1,115 @@
+<div class="flex flex-col  w-min-[500px]">
+    <div class="flex flex-row-reverse w-full pr-1">
+        <button mat-icon-button (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="sm:px-6 px-4 mb-4">
+    <div class="flex flex-row mb-3">
+      <div class="font-medium sm:text-2xl text-lg">
+       {{(ticket)? 'Editar ' : 'Agregar '}}Boleto
+      </div>
+    </div>
+    <div class="flex flex-col text-sm">
+        <form autocomplete="off" [formGroup]="miFormulario" class="formulario">
+            <div class="flex flex-col">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput placeholder="Nombre" formControlName="nombre">
+                    <mat-error *ngIf="campoNoValido('nombre')">
+                      Por favor ingrese un nombre válido
+                    </mat-error>
+                  </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Apellidos</mat-label>
+                    <input matInput placeholder="Apellidos" formControlName="apellidos">
+                    <mat-error *ngIf="campoNoValido('nombre')">
+                      Por favor ingrese apellidos validos
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Paquete</mat-label>
+                    <mat-select formControlName="paquete" multiple [compareWith]="comparer">
+                      <mat-option *ngFor="let package of PACKAGES" [value]="package">{{package.name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="campoNoValido('paquete')">
+                      Debe seleccionar al menos un paquete
+                    </mat-error>
+                  </mat-form-field>
+                  <div class="flex flex-row w-full">
+                <div class="flex flex-row w-[60%] mr-2">
+                    <mat-form-field appearance="outline" class="w-[100%]" >
+                    <mat-label>Fecha de venta</mat-label>
+                    <input matInput readonly [matDatepicker]="picker"  [max]="today" formControlName="fechaVenta">
+                    <mat-error *ngIf="campoNoValido('fechaVenta')">
+                      Seleccione una fecha valida
+                     </mat-error>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="flex flex-row w-[40%]">
+                  <mat-form-field appearance="outline" class="w-[100%]">
+                    <mat-label>Asiento</mat-label>
+                    <input matInput placeholder="Ingrese Asiento" formControlName="asiento">
+                  </mat-form-field> 
+                </div>
+                  </div>
+                  <div class="flex flex-row w-full items-center add-vendor flex-1">
+                  <mat-form-field appearance="outline" class="p-0 w-[90%]">
+                    <mat-label>Vendedor</mat-label>
+                    <input type="text"
+                           placeholder="Pick one"
+                           aria-label="Number"
+                           matInput
+                           formControlName="vendedor"
+                           [matAutocomplete]="auto">
+                           
+                    <mat-autocomplete #auto="matAutocomplete">
+                      <mat-option *ngFor="let option of filterSeller | async" [value]="option">
+                        {{option}}
+                      </mat-option>
+                    </mat-autocomplete>
+                    <mat-error *ngIf="campoNoValido('vendedor')">
+                      Seleccione un vendedor o compañia de la lista
+                     </mat-error>
+                  </mat-form-field>
+                  <button mat-raised-button (click)="newVendor()" type="button">
+                    <mat-icon fontIcon="add"></mat-icon>
+                  </button>
+                  </div>
+                  <div class="flex flex-row w-full">
+                    <div class="flex flex-row w-[50%] mr-2">
+                      <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Total</mat-label>
+                        <input matInput type="number" placeholder=0 disabled [value]="total">
+                      </mat-form-field>
+                    </div>
+                    <div class="Flex flex-row w-[50%]">
+                      <mat-form-field appearance="outline" class="w-full">
+                        <mat-label>Pago</mat-label>
+                        <input matInput type="number" placeholder=0 formControlName="pago">
+                        <mat-error *ngIf="campoNoValido('pago')">
+                          {{totalErrorMsg}}
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="flex flex-row justify-between mb-5  sm:text-sm text-xs">
+                    <div class="w-fit rounded-lg px-3 py-1 border-solid border border-gray-400 mr-2">
+                        Restante: ${{this.restante}}
+                    </div>
+                    <div class="w-fit rounded-lg px-3 py-1 border-solid border border-gray-400">
+                      Estado: {{this.estado}}
+                  </div>
+                  </div>
+                  <div class="flex flex-row-reverse sm:text-sm text-xs">
+                    <button mat-raised-button (click)="guardar()" *ngIf="!ticket">Agregar</button>
+                    <button mat-raised-button (click)="guardar()" *ngIf="ticket"  [disabled]="!isUpdate">Actualizar</button>
+                  </div>
+            </div>
+            </form>
+
+        </div>
+    </div>
+</div>

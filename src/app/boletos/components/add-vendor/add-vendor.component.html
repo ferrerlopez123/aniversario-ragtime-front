@@ -1,0 +1,33 @@
+<div class="flex flex-col w-full">
+    <div class="flex flex-row-reverse w-full pr-1">
+        <button mat-icon-button (click)="close()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="flex flex-col sm:px-6 px-4 sm:mb-4 mb-3">
+        <div class="flex flex-row mb-0">
+            <div class="font-medium sm:text-lg text-base">
+                Agregar Vendedor
+            </div>
+        </div>
+        <div class="sm:text-[12px] text-[10px]">
+                Ingresar el nombre completo del vendedor o la compañía
+        </div>
+        <form autocomplete="off" [formGroup]="newVendor" class="add-vendor">
+            <div class="flex flex-col">
+                <div class="flex flex-row flex-1 w-full">
+                    <mat-form-field appearance="outline" class="w-[100%]">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput placeholder="Vendedor o Compañia" formControlName="vendedor">
+                        <mat-error *ngIf="campoNoValido('vendedor')">
+                          Ingrese el nombre del vendedor o de la compañía
+                        </mat-error>
+                      </mat-form-field>
+                </div>
+                <div class="flex flex-row-reverse mt-1">
+                    <button mat-raised-button (click)="guardar()">Agregar</button>
+                </div>
+            </div>
+        </form>
+        </div>
+    </div>

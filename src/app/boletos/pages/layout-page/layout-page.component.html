@@ -1,0 +1,66 @@
+
+
+<mat-sidenav-container fullscreen>
+    <mat-sidenav #sidenav mode="push" class="bg-black">
+       <div class="flex flex-col">
+            <div class="flex flex-row h-[80px] bg-black text-lg
+             text-white items-center justify-center px-1 gap-1
+             border-b border-solid border-white">
+             <img src="assets/images/company-logo.png" alt="Ragtime logo" class="w-[200px] h-[80px]">
+            </div>
+                 <mat-nav-list class="flex flex-row w-full">
+                     <a mat-list-item [routerLink]="section.router" 
+                *ngFor="let section of headerSection" 
+                class="w-full"
+                (click)="sidenav.toggle()">
+                   <span class="text-gray-300 hover:text-white  hover:bg-slate-950" routerLinkActive="activo">{{section.name}}</span> 
+                </a>
+            </mat-nav-list>
+           
+       </div>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="md:hidden flex-row w-full bg-black h-fit text-white items-center justify-between px-1 flex">
+            <div class="flex flex-row items-center">
+            <button mat-icon-button
+                (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            </div>
+            <div class="flex flex-row-reverse text-base w-full mr-3 items-center">
+                <button mat-icon-button (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                  </button>
+                <span>Bienvenido {{usuario.name}}</span>  
+            </div>
+        </div>
+        <div class="hidden flex-row w-full bg-black h-fit text-white items-center justify-between px-6 md:flex">
+            <div>
+                <img src="assets/images/company-logo.png" alt="Ragtime logo" class="w-[200px] h-[80px]">
+            </div>
+           <div class="flex flex-row-reverse menu w-fit">
+            <div class="flex flex-col w-full">
+                <div class="flex flex-row text-base w-full justify-center name items-center">
+                    <span> Bienvenido {{usuario.name}} </span>  
+                    <button mat-icon-button (click)="logout()">
+                        <mat-icon>logout</mat-icon>
+                      </button>
+                </div>
+                <mat-nav-list class="flex flex-row w-full">
+                    <a mat-list-item [routerLink]="section.router" *ngFor="let section of headerSection" class="w-fit">
+                        <span class="text-gray-300 hover:text-white" routerLinkActive="activo">{{section.name}}</span> 
+                    </a>
+                </mat-nav-list>
+            </div>
+           </div>
+        </div>
+        <div class="px-6">
+            <router-outlet></router-outlet>
+        </div>
+        <div class="flex flex-row w-full bg-black text-white justify-center p-3">
+            Copyright© 2023 Alejandro Ferrer Lopez
+        </div>
+    </mat-sidenav-content>
+
+</mat-sidenav-container>
+

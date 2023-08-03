@@ -1,0 +1,10 @@
+
+.ticket-image {
+    background-image: url("/assets/images/fondo-boleto.jpg");
+    background-color: #cccccc;
+    height: fit-content;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+  }
